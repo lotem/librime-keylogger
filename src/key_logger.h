@@ -5,7 +5,7 @@
 #include <rime/engine.h>
 #include <rime/processor.h>
 
-using namespace rime;
+namespace rime {
 
 class KeyLogger : public Processor {
  public:
@@ -20,12 +20,12 @@ class KeyLogger : public Processor {
     update_connection_.disconnect();
   }
 
-  ProcessResult ProcessKeyEvent(const KeyEvent& key_event) override {
-    return kNoop;
-  }
+  ProcessResult ProcessKeyEvent(const KeyEvent& key_event) override;
 
  private:
   void OnUpdate(Context* ctx) {}
 
   connection update_connection_;
 };
+
+}  // namespace rime
