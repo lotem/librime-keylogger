@@ -2,7 +2,9 @@
 
 #include <fstream>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <rime/deployer.h>
 #include <rime/key_event.h>
+#include <rime/service.h>
 #include <yaml-cpp/yaml.h>
 
 using namespace boost::posix_time;
@@ -64,7 +66,8 @@ void KeyLogger::EndLogging() {
       // output to file.
       YAML::Emitter out;
       out << logs_;
-      std::ofstream yaml_file(log_file_);
+      path log_file_path = Service::instance().deployer().user_data_dir / log_file_;
+      std::ofstream yaml_file(log_file_path);
       yaml_file << out.c_str();
     }
     logs_.clear();
