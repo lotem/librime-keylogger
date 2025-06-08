@@ -7,25 +7,28 @@
 
 namespace rime {
 
+struct Log;
+
 class KeyLogger : public Processor {
  public:
-  explicit KeyLogger(const Ticket& ticket)
-    : Processor(ticket) {
-    Context* context = engine_->context();
-    update_connection_ = context->update_notifier()
-      .connect([this](Context* ctx) { OnUpdate(ctx); });
-  }
+  explicit KeyLogger(const Ticket& ticket);
+  virtual ~KeyLogger();
 
-  virtual ~KeyLogger() {
-    update_connection_.disconnect();
-  }
+  void StartLogging();
+  void EndLogging();
 
   ProcessResult ProcessKeyEvent(const KeyEvent& key_event) override;
 
  private:
   void OnUpdate(Context* ctx) {}
+  void OnOptionUpdate(Context* ctx, const string& option);
 
   connection update_connection_;
+  connection option_update_connection_;
+
+  vector<Log> logs_;
+  string log_file_;
+  bool is_logging_;
 };
 
 }  // namespace rime
